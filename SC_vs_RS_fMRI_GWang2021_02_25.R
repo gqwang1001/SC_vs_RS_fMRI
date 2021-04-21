@@ -62,6 +62,7 @@ kp.2
 
 # concordance VS FTbeforeSC -----------------------------------------------
 library(lme4)
+library(lmtest)
 dat1 <- datAnalysis %>% 
   filter(CCD!="no motor fmri") %>%
   droplevels()
@@ -82,6 +83,7 @@ smy.1.ri <- summary(fit1.ri)
 smy.1.ri$coefficients[,1] - 1.96*smy.1.ri$coefficients[,2]
 smy.1.ri$coefficients[,1] + 1.96*smy.1.ri$coefficients[,2]
 confint(fit1.ri)
+lrtest(fit1.ri, fit1.0.ri)
 
 fit1.1.ri <- glmer(GoodCCD ~ (1|id) + typeSC * ftBeforeSc, family = binomial, data = dat1)
 summary(fit1.1.ri)
@@ -91,7 +93,6 @@ smy.1.ri$coefficients[,1]
 smy.1.ri$coefficients[,1] - 1.96*smy.1.ri$coefficients[,2]
 smy.1.ri$coefficients[,1] + 1.96*smy.1.ri$coefficients[,2]
 
-
 fit1.2.ri <- glmer(GoodCCD ~ (1|id) + typeSC + typeSC : ftBeforeSc, family = binomial, data = dat1)
 summary(fit1.2.ri)
 
@@ -99,6 +100,8 @@ smy.1.ri <- summary(fit1.2.ri)
 smy.1.ri$coefficients[,1]
 smy.1.ri$coefficients[,1] - 1.96*smy.1.ri$coefficients[,2]
 smy.1.ri$coefficients[,1] + 1.96*smy.1.ri$coefficients[,2]
+
+fit1.3.ri <- glmer(GoodCCD ~ (1|id) + ftBeforeSc + typeSC : ftBeforeSc, family = binomial, data = dat1)
 
 
 ### Check the random intercept variable by bootstrapping 
